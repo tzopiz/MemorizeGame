@@ -42,6 +42,12 @@ struct MemorizeGame<Content: Equatable> {
             self.cards += [card1, card2]
         }
     }
+    mutating func reset() {
+        cards.indices.forEach {
+            cards[$0].isMatched = false
+            cards[$0].isFaceUP = false
+        }
+    }
     
     mutating func shuffle() {
         cards.shuffle()

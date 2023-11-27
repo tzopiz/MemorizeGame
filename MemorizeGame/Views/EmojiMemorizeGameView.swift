@@ -16,7 +16,7 @@ struct EmojiMemorizeGameView: View {
                   spacing: 0) {
             ForEach(viewModel.cards) { card in
                 CardView(card: card)
-                    .aspectRatio(2/3, contentMode: .fit)
+                    .aspectRatio(3/4, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
                         viewModel.choose(card)
@@ -36,13 +36,27 @@ struct EmojiMemorizeGameView: View {
         .background(Color.blue)
         .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
     }
+    private var resetButton: some View {
+        Button("reset") {
+            self.viewModel.reset()
+        }
+        .padding([.horizontal], 16)
+        .padding([.vertical], 4)
+        .font(.title)
+        .foregroundStyle(Color.white)
+        .background(Color.blue)
+        .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
+    }
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 cards
             }
             .animation(.default, value: viewModel.cards)
-            shuffleButton
+            HStack(spacing: 32) {
+                resetButton
+                shuffleButton
+            }
         }
         .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))
         
