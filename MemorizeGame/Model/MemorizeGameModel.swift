@@ -1,28 +1,35 @@
 //
 //  MemorizeGame.swift
-//  MemorizeGame
+//  MemorizeGameModel
 //
 //  Created by Дмитрий Корчагин on 11/27/23.
 //
 
 import Foundation
 
-struct MemorizeGame<Content: Equatable> {
+struct MemorizeGameModel<Content: Equatable> {
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         let id: UUID = UUID()
-        var isFaceUp: Bool = false
+        var isFaceUp: Bool = false {
+            didSet {
+                if oldValue, !isFaceUp { hasBeenSeen = true }
+            }
+        }
+        var hasBeenSeen: Bool = false
         var isMatched: Bool = false
         let content: Content
         var debugDescription: String {
             """
-            \nid: \(id)\nisFaceUp: \(isFaceUp)
-            isMatched: \(isMatched)\ncontent: \(content)
+            \nid: \(id)
+            isMatched: \(isMatched)
+            content: \(content)
             """
         }
         
     }
     
     private(set) var cards: Array<Card>
+    private(set) var score: Int = 0
     
     var indexOfFacedUpCard: Int? {
         get {
@@ -62,6 +69,10 @@ struct MemorizeGame<Content: Equatable> {
                 if cards[indexOfCurrentCard].content == cards[indexOfFacedUpCard].content {
                     cards[indexOfCurrentCard].isMatched = true
                     cards[indexOfFacedUpCard].isMatched = true
+                    score += 2
+                } else {
+                    if cards[indexOfCurrentCard].hasBeenSeen { score -= 1 }
+                    if cards[indexOfFacedUpCard].hasBeenSeen { score -= 1 }
                 }
             } else {
                 indexOfFacedUpCard = indexOfCurrentCard

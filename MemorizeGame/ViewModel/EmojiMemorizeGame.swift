@@ -8,8 +8,11 @@
 import Foundation
 
 class EmojiMemorizeGame: ObservableObject {
-    private static let emojis = ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙🏼‍♀️", "🙀", "👺", "🍬", "👹", "😱", "☠️", "🧌", "🫥", "🫠", "👽"]
-    @Published private var model = MemorizeGame<String>(numberOfPairsOfCard: 10) { index in
+    private static let emojis = ["👻", "🎃", "🕷️", "😈", "💀", "🐼",
+                                 "🧙🏼‍♀️", "🙀", "👺", "🍬", "👹", "😱",
+                                 "☠️", "🧌", "🫠", "👽", "🤡", "🤖",
+                                 "🧜‍♂️", "🧚‍♀️", "🧛🏻‍♂️", "🥷🏿", "🐹", "⛄️"]
+    @Published private var model = MemorizeGameModel<String>(numberOfPairsOfCard: 24) { index in
     
         guard emojis.indices.contains(index) else { return "💩" }
         return emojis[index]
@@ -17,6 +20,9 @@ class EmojiMemorizeGame: ObservableObject {
     
     var cards: Array<CardView.Card> {
         return model.cards
+    }
+    var score: Int {
+        return model.score
     }
     
     // MARK: - Intents

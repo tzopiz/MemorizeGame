@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct CardView: View {
-    typealias Card = MemorizeGame<String>.Card
+    
+    typealias Card = MemorizeGameModel<String>.Card
+    
     let card: Card
+    
     var body: some View {
         Pie(endAngle: .degrees(360))
             .opacity(0.33)

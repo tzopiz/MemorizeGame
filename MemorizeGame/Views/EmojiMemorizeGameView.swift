@@ -14,10 +14,11 @@ struct EmojiMemorizeGameView: View {
     var body: some View {
         VStack() {
             cards
-                .animation(.default, value: viewModel.cards)
             HStack(spacing: 32) {
                 resetButton
                 shuffleButton
+                Text("Score: \(viewModel.score)")
+                    .animation(nil)
             }
         }
         .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))
@@ -27,19 +28,26 @@ struct EmojiMemorizeGameView: View {
         AspectVGrid(items: viewModel.cards, aspectRatio: 3/4) { card in
             CardView(card: card)
                 .onTapGesture {
-                    viewModel.choose(card)
+                    withAnimation {
+                        viewModel.choose(card)
+                    }
                 }
         }
     }
     private var shuffleButton: some View {
         Button("shuffle") {
-            self.viewModel.shuffle()
+            withAnimation(.interactiveSpring(response: 0.75,
+                                             dampingFraction: 0.5)) {
+                self.viewModel.shuffle()
+            }
         }
         .blueRoundedStyle()
     }
     private var resetButton: some View {
         Button("reset") {
-            self.viewModel.reset()
+            withAnimation {
+                self.viewModel.reset()
+            }
         }
         .blueRoundedStyle()
     }
