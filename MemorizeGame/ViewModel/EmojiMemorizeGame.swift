@@ -9,8 +9,8 @@ import Foundation
 
 class EmojiMemorizeGame: ObservableObject {
     private static let emojis = ["👻", "🎃", "🕷️", "😈", "💀", "🕸️", "🧙🏼‍♀️", "🙀", "👺", "🍬", "👹", "😱", "☠️", "🧌"]
+    @Published private var model = MemorizeGame<String>(numberOfPairsOfCard: 4) { index in
     
-    @Published private var model = MemorizeGame<String>(numberOfPairsOfCard: 16) { index in
         guard emojis.indices.contains(index) else { return "💩" }
         return emojis[index]
     }

@@ -12,18 +12,26 @@ struct EmojiMemorizeGameView: View {
     @ObservedObject var viewModel: EmojiMemorizeGame
     
     private var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)],
-                  spacing: 0) {
-            ForEach(viewModel.cards) { card in
-                CardView(card: card)
-                    .aspectRatio(3/4, contentMode: .fit)
-                    .padding(4)
-                    .onTapGesture {
-                        viewModel.choose(card)
-                    }
+        GeometryReader { geometry in
+            let gridItemSize = gridItemWidthThatFits(
+                count: viewModel.cards.count,
+                size: geometry.size,
+                aspectRatio: 2/3
+            )
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)],
+                      spacing: 0) {
+                ForEach(viewModel.cards) { card in
+                    CardView(card: card)
+                        .aspectRatio(3/4, contentMode: .fit)
+                        .padding(4)
+                        .onTapGesture {
+                            print(gridItemSize)
+                            viewModel.choose(card)
+                        }
+                }
             }
         }
-                  .foregroundStyle(Color.orange)
+        .foregroundStyle(Color.orange)
     }
     private var shuffleButton: some View {
         Button("shuffle") {
@@ -47,11 +55,28 @@ struct EmojiMemorizeGameView: View {
         .background(Color.blue)
         .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
     }
+    private func gridItemWidthThatFits(
+        count: Int,
+        size: CGSize,
+        aspectRatio: CGFloat
+    ) -> CGFloat {
+            let count = CGFloat(count)
+            var columnCount = 1.0
+            repeat {
+                let width = size.width / columnCount
+                let height = width / aspectRatio
+    
+                let rowCount = (count / columnCount).rounded(.up)
+                if rowCount * height < size.height {
+                    return (size.width / columnCount).rounded(.down)
+                }
+                columnCount += 1
+            } while columnCount < count
+            return min(size.width / count, size.height * aspectRatio).rounded(.down)
+        }
     var body: some View {
         ZStack(alignment: .bottom) {
-            ScrollView {
-                cards
-            }
+            cards
             .animation(.default, value: viewModel.cards)
             HStack(spacing: 32) {
                 resetButton
@@ -66,3 +91,99 @@ struct EmojiMemorizeGameView: View {
 #Preview {
     EmojiMemorizeGameView(viewModel: EmojiMemorizeGame())
 }
+
+//
+//  EmojiMemorizeGameView.swift
+//  MemorizeGame
+//
+//  Created by Дмитрий Корчагин on 11/27/23.
+//
+
+//import SwiftUI
+//
+//struct EmojiMemorizeGameView: View {
+//    
+//    @ObservedObject var viewModel: EmojiMemorizeGame
+//    
+//    private var cards: some View {
+//        GeometryReader { geometry in
+//            let gridItemSize = gridItemWidthThatFits(
+//                count: viewModel.cards.count,
+//                size: geometry.size,
+//                aspectRatio: 2/3
+//            )
+//            LazyVGrid(
+//                columns: [GridItem(.adaptive( minimum: gridItemSize), spacing: 0)],
+//                spacing: 0
+//            ) {
+//                    ForEach(viewModel.cards) { card in
+//                        CardView(card: card)
+//                            .aspectRatio(3/4, contentMode: .fit)
+//                            .padding(4)
+//                            .onTapGesture {
+//                                viewModel.choose(card)
+//                            }
+//                    }
+//                }
+//        }
+//        .foregroundStyle(Color.orange)
+//    }
+//    private var shuffleButton: some View {
+//        Button("shuffle") {
+//            self.viewModel.shuffle()
+//        }
+//        .padding([.horizontal], 16)
+//        .padding([.vertical], 4)
+//        .font(.title)
+//        .foregroundStyle(Color.white)
+//        .background(Color.blue)
+//        .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
+//    }
+//    private var resetButton: some View {
+//        Button("reset") {
+//            self.viewModel.reset()
+//        }
+//        .padding([.horizontal], 16)
+//        .padding([.vertical], 4)
+//        .font(.title)
+//        .foregroundStyle(Color.white)
+//        .background(Color.blue)
+//        .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
+//    }
+//    private func gridItemWidthThatFits(
+//        count: Int,
+//        size: CGSize,
+//        aspectRatio: CGFloat) -> CGFloat {
+//        let count = CGFloat(count)
+//        var columnCount = 1.0
+//        repeat {
+//            let width = size.width / columnCount
+//            let height = width / aspectRatio
+//            
+//            let rowCount = (count / columnCount).rounded(.up)
+//            if rowCount * height < size.height {
+//                return (size.width / columnCount).rounded(.down)
+//            }
+//            columnCount += 1
+//        } while columnCount < count
+//        return min(size.width / count, size.height * aspectRatio).rounded(.down)
+//    }
+//    var body: some View {
+//        ZStack(alignment: .bottom) {
+//            ScrollView {
+//                cards
+//            }
+//            .animation(.default, value: viewModel.cards)
+//            HStack(spacing: 32) {
+//                resetButton
+//                shuffleButton
+//            }
+//        }
+////        .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))
+//        
+//    }
+//}
+//
+//#Preview {
+//    EmojiMemorizeGameView(viewModel: EmojiMemorizeGame())
+//}
