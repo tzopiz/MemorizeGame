@@ -25,22 +25,24 @@ struct EmojiMemorizeGameView: View {
         }
                   .foregroundStyle(Color.orange)
     }
+    private var shuffleButton: some View {
+        Button("shuffle") {
+            self.viewModel.shuffle()
+        }
+        .padding([.horizontal], 16)
+        .padding([.vertical], 4)
+        .font(.title)
+        .foregroundStyle(Color.white)
+        .background(Color.blue)
+        .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
+    }
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 cards
             }
             .animation(.default, value: viewModel.cards)
-           
-            Button("shuffle") {
-                self.viewModel.shuffle()
-            }
-            .padding([.horizontal], 18)
-            .padding([.vertical], 4)
-            .font(.title)
-            .foregroundStyle(Color.white)
-            .background(Color.blue)
-            .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
+            shuffleButton
         }
         .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))
         

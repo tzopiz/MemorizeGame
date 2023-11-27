@@ -70,8 +70,8 @@
 				0A2FF2B32B140843004B836C /* Views */,
 				0A2FF2B22B13F962004B836C /* ViewModel */,
 				0A2FF2B12B13F95C004B836C /* Model */,
-				0A2FF2A32B13F88D004B836C /* Assets.xcassets */,
 				0A2FF2A52B13F88D004B836C /* Preview Content */,
+				0A2FF2A32B13F88D004B836C /* Assets.xcassets */,
 			);
 			path = MemorizeGame;
 			sourceTree = "<group>";
