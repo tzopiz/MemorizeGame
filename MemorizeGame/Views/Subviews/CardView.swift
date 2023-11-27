@@ -13,7 +13,7 @@ struct CardView: View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
             Group {
-                base.fill(.white)
+                base.fill(.background)
                 base.strokeBorder(lineWidth: 3)
                 Text(card.content)
                     .font(.system(size: 100))

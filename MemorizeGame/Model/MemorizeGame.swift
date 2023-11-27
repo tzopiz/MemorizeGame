@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct MemorizeGame<Content> {
-    struct Card {
+struct MemorizeGame<Content: Equatable> {
+    struct Card: Equatable, Identifiable {
+        let id: UUID = UUID()
         var isFaceUP: Bool = true
         var isMatched: Bool = false
         let content: Content
@@ -19,8 +20,9 @@ struct MemorizeGame<Content> {
     init(numberOfPairsOfCard: Int, _ content: @escaping (Int) -> Content) {
         self.cards = []
         for index in 0..<max(2, numberOfPairsOfCard) {
-            let card = Card(content: content(index))
-            self.cards += [card, card]
+            let card1 = Card(content: content(index))
+            let card2 = Card(content: content(index))
+            self.cards += [card1, card2]
         }
     }
     
