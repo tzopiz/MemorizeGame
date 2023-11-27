@@ -10,29 +10,31 @@ import Foundation
 struct MemorizeGame<Content: Equatable> {
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         let id: UUID = UUID()
-        var isFaceUP: Bool = false
+        var isFaceUp: Bool = false
         var isMatched: Bool = false
         let content: Content
         var debugDescription: String {
             """
-            \nid: \(id)\nisFaceUp: \(isFaceUP)
+            \nid: \(id)\nisFaceUp: \(isFaceUp)
             isMatched: \(isMatched)\ncontent: \(content)
             """
         }
         
     }
+    
+    private(set) var cards: Array<Card>
+    
     var indexOfFacedUpCard: Int? {
         get {
-            let indices = cards.indices.filter { cards[$0].isFaceUP && !cards[$0].isMatched }
+            let indices = cards.indices.filter { cards[$0].isFaceUp && !cards[$0].isMatched }
             return indices.count == 1 ? indices.first : nil
         }
         set {
             for index in cards.indices where !cards[index].isMatched {
-                cards[index].isFaceUP = index == newValue
+                cards[index].isFaceUp = index == newValue
             }
         }
     }
-    private(set) var cards: Array<Card>
     
     init(numberOfPairsOfCard: Int, _ content: @escaping (Int) -> Content) {
         self.cards = []
@@ -45,7 +47,7 @@ struct MemorizeGame<Content: Equatable> {
     mutating func reset() {
         cards.indices.forEach {
             cards[$0].isMatched = false
-            cards[$0].isFaceUP = false
+            cards[$0].isFaceUp = false
         }
     }
     
@@ -55,7 +57,7 @@ struct MemorizeGame<Content: Equatable> {
 
     mutating func choose(_ card: Card) {
         guard let indexOfCurrentCard = cards.firstIndex(where: { $0 == card }) else { return }
-        if !cards[indexOfCurrentCard].isFaceUP, !cards[indexOfCurrentCard].isMatched {
+        if !cards[indexOfCurrentCard].isFaceUp, !cards[indexOfCurrentCard].isMatched {
             if let indexOfFacedUpCard = indexOfFacedUpCard {
                 if cards[indexOfCurrentCard].content == cards[indexOfFacedUpCard].content {
                     cards[indexOfCurrentCard].isMatched = true
@@ -64,7 +66,7 @@ struct MemorizeGame<Content: Equatable> {
             } else {
                 indexOfFacedUpCard = indexOfCurrentCard
             }
-            cards[indexOfCurrentCard].isFaceUP = true
+            cards[indexOfCurrentCard].isFaceUp = true
         }
     }
 }

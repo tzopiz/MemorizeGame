@@ -8,24 +8,28 @@
 import SwiftUI
 
 struct CardView: View {
-    let card: MemorizeGame<String>.Card
+    typealias Card = MemorizeGame<String>.Card
+    let card: Card
     var body: some View {
-        ZStack {
-            let base = RoundedRectangle(cornerRadius: 12)
-            Group {
-                base.fill(.background)
-                base.strokeBorder(lineWidth: 3)
+        Pie(endAngle: .degrees(360))
+            .opacity(0.33)
+            .overlay(
                 Text(card.content)
-                    .font(.system(size: 100))
-                    .minimumScaleFactor(0.5)
+                    .font(.system(size: 200))
+                    .minimumScaleFactor(0.1)
                     .aspectRatio(1, contentMode: .fit)
-            }
-            .opacity(card.isFaceUP ? 1 : 0)
-            base
-                .fill()
-                .opacity(card.isFaceUP ? 0 : 1)
-        }
-        .disabled(card.isMatched || card.isFaceUP)
-        .foregroundStyle(card.isMatched ? Color.gray : Color.orange)
+            )
+            .cardify(isFaceUp: card.isFaceUp, isMatched: card.isMatched)
+    }
+}
+
+#Preview {
+    let cards = [CardView.Card(content: "🤖"),
+                 CardView.Card(isFaceUp: true, content: "🤖"),
+                 CardView.Card(isFaceUp: true, isMatched: true, content: "🤖"),
+                 CardView.Card(isFaceUp: true, isMatched: false, content: "🤖")]
+    return AspectVGrid(items: cards, aspectRatio: 3/4) { card in
+        CardView(card: card)
+            .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))
     }
 }

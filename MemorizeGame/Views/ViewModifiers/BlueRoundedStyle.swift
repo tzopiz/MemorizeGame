@@ -15,6 +15,12 @@ struct BlueRoundedStyle: ViewModifier {
             .font(.title)
             .foregroundStyle(Color.white)
             .background(Color.blue)
-            .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
+            .clipShape(RoundedRectangle(cornerRadius: 8), style: FillStyle())
+    }
+}
+
+extension View {
+    func blueRoundedStyle() -> some View {
+        modifier(BlueRoundedStyle())
     }
 }
