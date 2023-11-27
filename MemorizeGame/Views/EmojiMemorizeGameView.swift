@@ -14,10 +14,13 @@ struct EmojiMemorizeGameView: View {
     private var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)],
                   spacing: 0) {
-            ForEach(viewModel.cards, id: \.id) { card in
+            ForEach(viewModel.cards) { card in
                 CardView(card: card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
                   .foregroundStyle(Color.orange)
@@ -39,8 +42,7 @@ struct EmojiMemorizeGameView: View {
             .background(Color.blue)
             .clipShape(RoundedRectangle(cornerRadius: 6), style: FillStyle())
         }
-        .padding(EdgeInsets(top: 0, leading: 4,
-                            bottom: 0, trailing: 4))
+        .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))
         
     }
 }

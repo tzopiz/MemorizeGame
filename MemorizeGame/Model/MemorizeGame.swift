@@ -8,13 +8,30 @@
 import Foundation
 
 struct MemorizeGame<Content: Equatable> {
-    struct Card: Equatable, Identifiable {
+    struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         let id: UUID = UUID()
-        var isFaceUP: Bool = true
+        var isFaceUP: Bool = false
         var isMatched: Bool = false
         let content: Content
+        var debugDescription: String {
+            """
+            \nid: \(id)\nisFaceUp: \(isFaceUP)
+            isMatched: \(isMatched)\ncontent: \(content)
+            """
+        }
+        
     }
-    
+    var indexOfFacedUpCard: Int? {
+        get {
+            let indices = cards.indices.filter { cards[$0].isFaceUP && !cards[$0].isMatched }
+            return indices.count == 1 ? indices.first : nil
+        }
+        set {
+            for index in cards.indices where !cards[index].isMatched {
+                cards[index].isFaceUP = index == newValue
+            }
+        }
+    }
     private(set) var cards: Array<Card>
     
     init(numberOfPairsOfCard: Int, _ content: @escaping (Int) -> Content) {
@@ -29,6 +46,19 @@ struct MemorizeGame<Content: Equatable> {
     mutating func shuffle() {
         cards.shuffle()
     }
-    
-    func choose(_ card: Card) { }
+
+    mutating func choose(_ card: Card) {
+        guard let indexOfCurrentCard = cards.firstIndex(where: { $0 == card }) else { return }
+        if !cards[indexOfCurrentCard].isFaceUP, !cards[indexOfCurrentCard].isMatched {
+            if let indexOfFacedUpCard = indexOfFacedUpCard {
+                if cards[indexOfCurrentCard].content == cards[indexOfFacedUpCard].content {
+                    cards[indexOfCurrentCard].isMatched = true
+                    cards[indexOfFacedUpCard].isMatched = true
+                }
+            } else {
+                indexOfFacedUpCard = indexOfCurrentCard
+            }
+            cards[indexOfCurrentCard].isFaceUP = true
+        }
+    }
 }

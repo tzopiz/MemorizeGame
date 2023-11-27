@@ -25,5 +25,7 @@ struct CardView: View {
                 .fill()
                 .opacity(card.isFaceUP ? 0 : 1)
         }
+        .disabled(card.isMatched || card.isFaceUP)
+        .foregroundStyle(card.isMatched ? Color.gray : Color.orange)
     }
 }
