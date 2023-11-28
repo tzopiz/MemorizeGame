@@ -9,13 +9,13 @@ import Foundation
 
 struct MemorizeGameModel<Content: Equatable> {
     
-    private(set) var cards: Array<Card>
-    private(set) var score: Int = 0 {
+    fileprivate(set) var cards: Array<Card>
+    fileprivate(set) var score: Int = 0 {
         willSet {
-            if newValue > record { record = newValue }
+            if newValue > record { GameRecord.saveRecord(newValue) }
         }
     }
-    private(set) var record: Int = 0
+    var record: Int { GameRecord.loadRecord() }
     
     var indexOfFacedUpCard: Int? {
         get {
@@ -32,9 +32,8 @@ struct MemorizeGameModel<Content: Equatable> {
     init(numberOfPairsOfCards: Int, _ content: @escaping (Int) -> Content) {
         cards = []
         for index in 0..<max(2, numberOfPairsOfCards) {
-            let card1 = Card(content: content(index))
-            let card2 = Card(content: content(index))
-            self.cards += [card1, card2]
+            let content = content(index)
+            self.cards += [Card(content: content), Card(content: content)]
         }
     }
     mutating func reset() {
@@ -42,7 +41,6 @@ struct MemorizeGameModel<Content: Equatable> {
             cards[$0].isMatched = false
             cards[$0].isFaceUp = false
         }
-        record = max(0, record, score)
         score = 0
     }
     

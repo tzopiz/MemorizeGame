@@ -8,6 +8,24 @@
 import Foundation
 
 extension MemorizeGameModel {
+    struct GameRecord {
+        static fileprivate var userDefaultsKey: String { "gameRecord" }
+        
+        static func saveRecord(_ newRecord: Int) {
+            let userDefaults = UserDefaults.standard
+            let currentRecord = userDefaults.integer(forKey: userDefaultsKey)
+            
+            if newRecord > currentRecord {
+                userDefaults.set(newRecord, forKey: userDefaultsKey)
+            }
+        }
+        
+        static func loadRecord() -> Int {
+            let userDefaults = UserDefaults.standard
+            let currentRecord = userDefaults.integer(forKey: userDefaultsKey)
+            return currentRecord
+        }
+    }
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         let id: UUID = UUID()
         var isFaceUp: Bool = false {

@@ -9,13 +9,15 @@ import Foundation
 
 class EmojiMemorizeGame: ObservableObject {
     fileprivate static let emojis = ["👻", "🎃", "🕷️", "😈", "💀", "🐼",
-                                 "🧙🏼‍♀️", "🙀", "👺", "🍬", "👹", "😱",
-                                 "☠️", "🧌", "🫠", "👽", "🤡", "🤖",
-                                 "🧜‍♂️", "🧚‍♀️", "🧛🏻‍♂️", "🥷🏿", "🐹", "⛄️"]
-    @Published 
+                                     "🧙🏼‍♀️", "🙀", "👺", "🍬", "👹", "😱",
+                                     "☠️", "🧌", "🫠", "👽", "🤡", "🤖",
+                                     "🧜‍♂️", "🧚‍♀️", "🧛🏻‍♂️", "🥷🏿", "🐹", "⛄️",
+                                     "🧞‍♀️", "🦑", "🧞‍♂️", "🐥", "🪿", "🥑",
+                                     "🌡️", "🤬", "🥶", "🫥", "🐞", "🦟"]
+    @Published
     fileprivate var model = MemorizeGameModel<String>(numberOfPairsOfCards: 10) { index in
         guard emojis.indices.contains(index) else { return "💩" }
-        return emojis[index]
+        return emojis.shuffled()[index]
     }
     
     var cards: Array<CardView.Card> {
