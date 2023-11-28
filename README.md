@@ -20,11 +20,12 @@ Tap or click on two cards to flip them over.
 If the cards match, they stay face up. If not, they flip back down.
 Keep flipping pairs until all cards are matched.
 Try to achieve the highest score by remembering card positions and making successful matches.
-Project Structure:
 
-MemorizeGameModel: Contains the logic for card flipping, matching, scoring, and record keeping.
-EmojiMemorizeGame: Handles the user interface elements and interactions for the game.
-EmojiMemorizeGameView: Integrates the game components into the main view of the application.
-Contributions and Feedback: tg|vk|inst: tzopiz
+## Project Structure:
+
+`MemorizeGameModel`: Contains the logic for card flipping, matching, scoring, and record keeping.
+`EmojiMemorizeGame`: Handles the user interface elements and interactions for the game.
+`EmojiMemorizeGameView`: Integrates the game components into the main view of the application.
+`Contributions and Feedback`: tg|vk|inst: tzopiz
 
 Contributions, suggestions, and feedback are welcome! Feel free to fork the repository, create branches, and submit pull requests to enhance the game with new features, improvements, or bug fixes.
