@@ -13,6 +13,12 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     var aspectRatio: CGFloat = 1.0
     var content: (Item) -> ItemView
     
+    init(_ items: [Item], aspectRatio: CGFloat, @ViewBuilder content: @escaping (Item) -> ItemView) {
+        self.items = items
+        self.aspectRatio = aspectRatio
+        self.content = content
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             let gridItemSize = gridItemWidthThatFits(

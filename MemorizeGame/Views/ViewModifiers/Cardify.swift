@@ -16,7 +16,7 @@ struct Cardify: ViewModifier, Animatable {
         rotation < 90
     }
     var animatableData: CGFloat {
-        get { return rotation }
+        get { rotation }
         set { rotation = newValue }
     }
     

@@ -13,7 +13,7 @@ class EmojiMemorizeGame: ObservableObject {
                                  "☠️", "🧌", "🫠", "👽", "🤡", "🤖",
                                  "🧜‍♂️", "🧚‍♀️", "🧛🏻‍♂️", "🥷🏿", "🐹", "⛄️"]
     @Published 
-    fileprivate var model = MemorizeGameModel<String>(numberOfPairsOfCards: 21) { index in
+    fileprivate var model = MemorizeGameModel<String>(numberOfPairsOfCards: 10) { index in
         guard emojis.indices.contains(index) else { return "💩" }
         return emojis[index]
     }

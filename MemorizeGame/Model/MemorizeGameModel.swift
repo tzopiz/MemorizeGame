@@ -8,25 +8,6 @@
 import Foundation
 
 struct MemorizeGameModel<Content: Equatable> {
-    struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-        let id: UUID = UUID()
-        var isFaceUp: Bool = false {
-            didSet {
-                if oldValue, !isFaceUp { hasBeenSeen = true }
-            }
-        }
-        var hasBeenSeen: Bool = false
-        var isMatched: Bool = false
-        let content: Content
-        var debugDescription: String {
-            """
-            \nid: \(id)
-            isMatched: \(isMatched)
-            content: \(content)
-            """
-        }
-        
-    }
     
     private(set) var cards: Array<Card>
     private(set) var score: Int = 0 {
@@ -49,7 +30,7 @@ struct MemorizeGameModel<Content: Equatable> {
     }
     
     init(numberOfPairsOfCards: Int, _ content: @escaping (Int) -> Content) {
-        self.cards = []
+        cards = []
         for index in 0..<max(2, numberOfPairsOfCards) {
             let card1 = Card(content: content(index))
             let card2 = Card(content: content(index))
@@ -77,7 +58,7 @@ struct MemorizeGameModel<Content: Equatable> {
                 if cards[indexOfCurrentCard].content == cards[indexOfFacedUpCard].content {
                     cards[indexOfCurrentCard].isMatched = true
                     cards[indexOfFacedUpCard].isMatched = true
-                    score += 2
+                    score += 2 + cards[indexOfFacedUpCard].bonus + cards[indexOfCurrentCard].bonus
                 } else {
                     if cards[indexOfCurrentCard].hasBeenSeen { score -= 1 }
                     if cards[indexOfFacedUpCard].hasBeenSeen { score -= 1 }
