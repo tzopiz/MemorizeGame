@@ -27,10 +27,10 @@ struct CardView: View {
 }
 
 #Preview {
-    let cards = [CardView.Card(content: "🤖"),
-                 CardView.Card(isFaceUp: true, content: "🤖"),
-                 CardView.Card(isFaceUp: true, isMatched: true, content: "🤖"),
-                 CardView.Card(isFaceUp: true, isMatched: false, content: "🤖")]
+    let cards = [CardView.Card(content: "-"),
+                 CardView.Card(isFaceUp: true, content: "🧞"),
+                 CardView.Card(isFaceUp: true, isMatched: true, content: "🧞‍♀️"),
+                 CardView.Card(isFaceUp: true, isMatched: false, content: "🧞‍♂️")]
     return AspectVGrid(items: cards, aspectRatio: 3/4) { card in
         CardView(card: card)
             .padding(EdgeInsets(top: 0, leading: 4,  bottom: 0, trailing: 4))

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
+    
     var items: [Item]
     var aspectRatio: CGFloat = 1.0
     var content: (Item) -> ItemView
@@ -30,7 +31,7 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
         }
     }
     
-    func gridItemWidthThatFits(
+    fileprivate func gridItemWidthThatFits(
         count: Int,
         size: CGSize,
         aspectRatio: CGFloat

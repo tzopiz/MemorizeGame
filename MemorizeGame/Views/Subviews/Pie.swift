@@ -12,7 +12,6 @@ struct Pie: Shape {
     
     var startAngle: Angle = .zero
     var clockWise: Bool = true
-    
     let endAngle: Angle
     
     func path(in rect: CGRect) -> Path {

@@ -29,7 +29,12 @@ struct MemorizeGameModel<Content: Equatable> {
     }
     
     private(set) var cards: Array<Card>
-    private(set) var score: Int = 0
+    private(set) var score: Int = 0 {
+        willSet {
+            if newValue > record { record = newValue }
+        }
+    }
+    private(set) var record: Int = 0
     
     var indexOfFacedUpCard: Int? {
         get {
@@ -43,9 +48,9 @@ struct MemorizeGameModel<Content: Equatable> {
         }
     }
     
-    init(numberOfPairsOfCard: Int, _ content: @escaping (Int) -> Content) {
+    init(numberOfPairsOfCards: Int, _ content: @escaping (Int) -> Content) {
         self.cards = []
-        for index in 0..<max(2, numberOfPairsOfCard) {
+        for index in 0..<max(2, numberOfPairsOfCards) {
             let card1 = Card(content: content(index))
             let card2 = Card(content: content(index))
             self.cards += [card1, card2]
@@ -56,6 +61,8 @@ struct MemorizeGameModel<Content: Equatable> {
             cards[$0].isMatched = false
             cards[$0].isFaceUp = false
         }
+        record = max(0, record, score)
+        score = 0
     }
     
     mutating func shuffle() {
@@ -63,7 +70,8 @@ struct MemorizeGameModel<Content: Equatable> {
     }
 
     mutating func choose(_ card: Card) {
-        guard let indexOfCurrentCard = cards.firstIndex(where: { $0 == card }) else { return }
+        guard let indexOfCurrentCard = cards.firstIndex(where: { $0 == card }) 
+        else { return }
         if !cards[indexOfCurrentCard].isFaceUp, !cards[indexOfCurrentCard].isMatched {
             if let indexOfFacedUpCard = indexOfFacedUpCard {
                 if cards[indexOfCurrentCard].content == cards[indexOfFacedUpCard].content {
